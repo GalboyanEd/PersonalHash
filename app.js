@@ -1,27 +1,17 @@
 var hash = require('object-hash');
-var readline = require('readline');
-var fullName = 'Eduard Galboyan';
 
-process.stdout.write('Please wait...');
+function getNonce(fullName,difficulty){
+	for(var i = 0;; i++){
+		var toHash = fullName + i;
+		var hashedName = hash(toHash);
 
-for(var i = 0;; i++){
-	var toHash = fullName + i;
-	var hashedName = hash(toHash);
+		if(startZero(hashedName) >= difficulty){
 
-	if(startZero(hashedName) >= 5){
-  		readline.cursorTo(process.stdout, 0);
-  		process.stdout.write('            ');
-  		readline.cursorTo(process.stdout, 0);
-  		
-		console.log('Your name is: ' + fullName);
-		console.log('The hash of: ' + toHash + ' is ' + hashedName);
-		console.log('Look it is starting with ' + startZero(hashedName) + ' zeros!');
-		break;
-	}
-}
-
-
-
+			break;
+		};
+	};
+	return {hashedName, toHash};
+};
 
 function startZero(str){
 	str = str.split('');
@@ -29,3 +19,5 @@ function startZero(str){
 	for(result = 0; str[result] == '0'; result++){};
 	return result;
 }
+
+module.exports = getNonce;
